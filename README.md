@@ -112,10 +112,3 @@ Here is an example of what the output `hierarchical_tree.json` might look like:
 
 ## Contributing
 Feel free to submit issues and pull requests for new features, bug fixes, or improvements.
-
-## License
-This project is licensed under the MIT License.
-
-## Contact
-For questions or issues, reach out to `john.doe@example.com`.
-

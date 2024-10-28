@@ -167,10 +167,18 @@ def parser(output):
     hierarchical_tree_graph = convert_cyclonedx_to_tree(data, deps, ignore_list)
     # Identify the root nodes
     roots = root_nodes(hierarchical_tree_graph)
-    print(f'Root Dependencies: {roots}')
+    print(f'root nodes: {roots}')
+    
+    if not roots:
+        print("No root nodes found. Possible circular dependency or incomplete data.")
     
     # Build the hierarchical tree starting from each root node
     hierarchical_tree = [recursive_hierarchy(hierarchical_tree_graph[0], hierarchical_tree_graph[1], root, set()) for root in roots]
+    
+    # Include error handling output if no roots were found or partial tree was generated
+    if not hierarchical_tree:
+        hierarchical_tree = [{"error": "No valid root nodes found or circular dependencies detected."}]
+    
     # Write the resulting tree to a JSON file
     write_tree_to_json(hierarchical_tree, "hierarchical_tree.json")
 

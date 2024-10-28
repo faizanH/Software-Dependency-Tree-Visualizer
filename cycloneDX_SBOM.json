@@ -1,0 +1,243 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.4",
+    "serialNumber": "urn:uuid:123e4567-e89b-12d3-a456-426614174000",
+    "version": 1,
+    "metadata": {
+      "timestamp": "2024-10-27T12:00:00Z",
+      "tools": [
+        {
+          "vendor": "ExampleVendor",
+          "name": "ExampleTool",
+          "version": "1.0.0"
+        }
+      ],
+      "authors": [
+        {
+          "name": "John Doe",
+          "email": "john.doe@example.com",
+          "organization": "ExampleOrg"
+        }
+      ],
+      "component": {
+        "bom-ref": "root-component",
+        "name": "Test Application",
+        "version": "1.0.0",
+        "type": "application",
+        "licenses": [
+          {
+            "license": {
+              "name": "Proprietary"
+            }
+          }
+        ],
+        "supplier": {
+          "name": "Test Supplier",
+          "url": "https://www.testsupplier.com"
+        }
+      }
+    },
+    "components": [
+      {
+        "bom-ref": "component-1",
+        "name": "Library A",
+        "version": "2.0.0",
+        "type": "library",
+        "description": "A sample library for handling A operations.",
+        "licenses": [
+          {
+            "license": {
+              "name": "MIT"
+            }
+          }
+        ],
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "3a7bd3e2360e24e8ed56d48f11d6bcf1b45f67688bb1b21d64e2fa7c7e5d2b2d"
+          }
+        ],
+        "properties": [
+          {
+            "name": "custom-property",
+            "value": "some-value"
+          },
+          {
+            "name": "bundler",
+            "value": "bundler"
+          }
+        ],
+        "externalReferences": [
+          {
+            "type": "website",
+            "url": "https://www.librarya.com"
+          }
+        ]
+      },
+      {
+        "bom-ref": "component-2",
+        "name": "Library B",
+        "version": "1.5.0",
+        "type": "library",
+        "description": "A utility library for B-related tasks.",
+        "licenses": [
+          {
+            "license": {
+              "name": "Apache-2.0"
+            }
+          }
+        ],
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "6d7fce9fee471194aa8b5b6e47267f03e4eddf1a9c5b928a196bcedd6cfea2f5"
+          }
+        ],
+        "properties": [
+          {
+            "name": "custom-property",
+            "value": "another-value"
+          }
+        ],
+        "externalReferences": [
+          {
+            "type": "documentation",
+            "url": "https://www.librarybdocs.com"
+          }
+        ]
+      },
+      {
+        "bom-ref": "component-3",
+        "name": "Library C",
+        "version": "3.1.0",
+        "type": "library",
+        "description": "Provides core functionality for C components.",
+        "licenses": [
+          {
+            "license": {
+              "name": "GPL-3.0"
+            }
+          }
+        ],
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "cc2ed5874b5d6e7896547d8f8765e4a75f6f1c2d7d654ba7cfeaa3bfa16fbb1f"
+          }
+        ],
+        "properties": [
+          {
+            "name": "custom-property",
+            "value": "value-for-c"
+          }
+        ],
+        "externalReferences": [
+          {
+            "type": "issue-tracker",
+            "url": "https://www.librarycissues.com"
+          }
+        ]
+      },
+      {
+        "bom-ref": "component-4",
+        "name": "Library D",
+        "version": "4.0.0",
+        "type": "library",
+        "description": "Handles D related services.",
+        "licenses": [
+          {
+            "license": {
+              "name": "BSD-3-Clause"
+            }
+          }
+        ],
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "d0c0c0c0c0c0b0b0b0b0a0a0a0a0a0a0e0e0e0e0f0f0f0f0f0f0f0f0f0f0f0f0"
+          }
+        ],
+        "properties": [
+          {
+            "name": "custom-property",
+            "value": "value-for-d"
+          }
+        ],
+        "externalReferences": [
+          {
+            "type": "vcs",
+            "url": "https://github.com/libraryd"
+          }
+        ]
+      },
+      {
+        "bom-ref": "component-5",
+        "name": "Library E",
+        "version": "1.0.0",
+        "type": "library",
+        "description": "E-library providing additional utilities.",
+        "licenses": [
+          {
+            "license": {
+              "name": "Proprietary"
+            }
+          }
+        ],
+        "hashes": [
+          {
+            "alg": "SHA-256",
+            "content": "2c4b7f8e2e4b3a8a9a9f4e5f5e2d3c4b6e8d9f0f9e4d4c3b6e5a7c6f3d8b5e1"
+          }
+        ],
+        "properties": [
+          {
+            "name": "custom-property",
+            "value": "value-for-e"
+          }
+        ],
+        "externalReferences": [
+          {
+            "type": "website",
+            "url": "https://www.librarye.com"
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      {
+        "ref": "root-component",
+        "dependsOn": [
+          "component-1",
+          "component-2"
+        ]
+      },
+      {
+        "ref": "component-1",
+        "dependsOn": [
+          "component-3",
+          "component-4"
+        ]
+      },
+      {
+        "ref": "component-2",
+        "dependsOn": [
+          "component-4"
+        ]
+      },
+      {
+        "ref": "component-3",
+        "dependsOn": [
+          "component-5"
+        ]
+      },
+      {
+        "ref": "component-4",
+        "dependsOn": []
+      },
+      {
+        "ref": "component-5",
+        "dependsOn": []
+      }
+    ]
+  }
+  

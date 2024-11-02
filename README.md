@@ -90,7 +90,7 @@ Replace `cycloneDX-sbom.json` with the path to your actual SBOM file. This reque
 
 ## Contributing
 
-We welcome contributions to improve the **Dependency Tree Visualizer**. To contribute, please follow these steps:
+I welcome contributions to improve the **Dependency Tree Visualizer**. To contribute, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix.

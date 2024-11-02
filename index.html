@@ -54,22 +54,30 @@
     </div>
   
     <div class="divider"></div>
-  
-    <!-- Initial File Upload Section -->
-    <div id="initial-upload-section">
-      <div id="file-upload-area" class="file-upload-area">
-        <div id="drag-drop-area" class="drag-drop-area">
-          Drag and drop your CyclonDX SBOM JSON file here, or click to select a file
-        </div>
-        <input type="file" id="file-input" accept=".json">
-        <button onclick="uploadFile()">Upload and Visualize</button>
-        <!-- Progress Indicator (hidden by default) -->
-        <div id="progress-indicator" class="progress-indicator">
-          <div class="spinner"></div>
-          <span>Processing your file...</span>
-        </div>
-      </div>
+
+<!-- Initial File Upload Section -->
+<div id="initial-upload-section">
+  <div id="file-upload-area" class="file-upload-area">
+    <div id="drag-drop-area" class="drag-drop-area">
+      Drag and drop your CyclonDX SBOM JSON file here, or click to select a file
     </div>
+
+    <div class="drag-drop-area-subtext">
+      Example file can be located <a href="https://github.com/faizan12123/Software-Dependency-Tree-Visualizer/blob/main/original-script/cycloneDX_SBOM.json" target="_blank" rel="noopener noreferrer">here</a>
+    </div>
+
+    <input type="file" id="file-input" accept=".json">
+    <button onclick="uploadFile()">Upload and Visualize</button>
+
+    <!-- Progress Indicator (hidden by default) -->
+    <div id="progress-indicator" class="progress-indicator">
+      <div class="spinner"></div>
+      <span>Processing your file...</span>
+    </div>
+  </div>
+</div>
+
+
   
     <!-- Visualization Section (Initially Hidden) -->
     <div id="visualization-section" style="display: none;">

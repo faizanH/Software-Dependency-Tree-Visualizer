@@ -167,13 +167,6 @@ def root_nodes(hierarchical_tree_graph):
     
     return roots
 
-# Writes the hierarchical tree to a JSON file
-def write_tree_to_json(hierarchical_tree, output_file):
-    json_data = json.dumps(hierarchical_tree, indent=2)
-    with open(output_file, "w") as f:
-        f.write(json_data)
-    print(f"JSON data written to {output_file}")
-
 # Main parsing function to process the SBOM and generate the hierarchical tree
 def parser(output):
     # Clean the output to extract relevant data
@@ -182,19 +175,15 @@ def parser(output):
     hierarchical_tree_graph = convert_cyclonedx_to_tree(data, deps, ignore_list)
     # Identify the root nodes
     roots = root_nodes(hierarchical_tree_graph)
-    print(f'root nodes: {roots}')
     
     if not roots:
-        print("No root nodes found. Possible circular dependency or incomplete data.")
+        raise ValueError("No valid root nodes found or circular dependencies detected.")
     
     # Build the hierarchical tree starting from each root node
     hierarchical_tree = [recursive_hierarchy(hierarchical_tree_graph[0], hierarchical_tree_graph[1], root, set()) for root in roots]
-    
-    # Include error handling output if no roots were found or partial tree was generated
-    if not hierarchical_tree:
-        hierarchical_tree = [{"error": "No valid root nodes found or circular dependencies detected."}]
-    
+
     return hierarchical_tree
+
 
 #==========================================
 # Flask API Endpoint

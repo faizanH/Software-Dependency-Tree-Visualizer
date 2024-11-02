@@ -24,12 +24,12 @@ Here are some screenshots of the Software Dependency Tree Visualizer in action:
 
 <table>
   <tr>
-    <td><img src="screenshots/screenshot1.png" alt="Screenshot 1" width="300"></td>
-    <td><img src="screenshots/screenshot2.png" alt="Screenshot 2" width="300"></td>
+    <td><img src="screenshots/screenshot1.png" alt="Screenshot 1" ></td>
+    <td><img src="screenshots/screenshot2.png" alt="Screenshot 2" ></td>
   </tr>
   <tr>
-    <td><img src="screenshots/screenshot3.png" alt="Screenshot 3" width="300"></td>
-    <td><img src="screenshots/screenshot4.png" alt="Screenshot 4" width="300"></td>
+    <td><img src="screenshots/screenshot3.png" alt="Screenshot 3" ></td>
+    <td><img src="screenshots/screenshot4.png" alt="Screenshot 4" ></td>
   </tr>
 </table>
 

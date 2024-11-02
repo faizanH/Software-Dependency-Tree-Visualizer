@@ -1,6 +1,6 @@
-# Software Dependency Tree Visualizer
+# [Software Dependency Tree Visualizer](https://faizan12123.github.io/Software-Dependency-Tree-Visualizer/)
 
-**Hosted Application URL**: [https://dependency-tree-techzon.pythonanywhere.com](https://dependency-tree-techzon.pythonanywhere.com)
+**Hosted Application URL**: [https://faizan12123.github.io/Software-Dependency-Tree-Visualizer/](https://faizan12123.github.io/Software-Dependency-Tree-Visualizer/)
 
 **Hosted API URL**: [https://dependency-tree-techzon.pythonanywhere.com/api/parse](https://dependency-tree-techzon.pythonanywhere.com/api/parse)
 

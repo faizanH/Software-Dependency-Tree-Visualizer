@@ -1,134 +1,190 @@
-const API_URL = "http://127.0.0.1:5000/api/parse";
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+// Constants
+const API_URL = "https://dependency-tree-techzon.pythonanywhere.com/api/parse";
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit for file upload
 const ALLOWED_FILE_TYPE = "application/json";
 
+//==========================================
+// Utility Functions
+//==========================================
+
+// Display an error message
 function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message visible';
-    errorDiv.textContent = message;
-    
-    // Remove any existing error messages
-    const existingError = document.querySelector('.error-message');
-    if (existingError) {
-        existingError.remove();
-    }
-    
-    document.getElementById('file-upload-area').appendChild(errorDiv);
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'error-message visible';
+  errorDiv.textContent = message;
+
+  // Remove existing error if present
+  const existingError = document.querySelector('.error-message');
+  if (existingError) {
+      existingError.remove();
+  }
+
+  document.getElementById('file-upload-area').appendChild(errorDiv);
+  setTimeout(() => errorDiv.remove(), 5000); // Remove error after 5 seconds
 }
 
+// Validate uploaded file (size and type)
 function validateFile(file) {
-    // Check file size
-    if (file.size > MAX_FILE_SIZE) {
-        throw new Error(`File size exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit`);
-    }
-
-    // Check file type
-    if (file.type !== ALLOWED_FILE_TYPE) {
-        throw new Error('Only JSON files are allowed');
-    }
-
-    return true;
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error(`File size exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit`);
+  }
+  if (file.type !== ALLOWED_FILE_TYPE) {
+    throw new Error('Only JSON files are allowed');
+  }
+  return true;
 }
 
+// Validate and sanitize JSON content
 async function validateJSON(jsonString) {
-    try {
-        const parsed = JSON.parse(jsonString);
-        
-        // Add any specific JSON structure validation here
-        if (!Array.isArray(parsed) && typeof parsed !== 'object') {
-            throw new Error('Invalid JSON structure');
-        }
-
-        // Sanitize the JSON to prevent XSS
-        const sanitized = JSON.parse(JSON.stringify(parsed));
-        return sanitized;
-    } catch (error) {
-        throw new Error('Invalid JSON content: ' + error.message);
+  try {
+    const parsed = JSON.parse(jsonString);
+    if (!Array.isArray(parsed) && typeof parsed !== 'object') {
+      throw new Error('Invalid JSON structure');
     }
+    return JSON.parse(JSON.stringify(parsed)); // Sanitize the JSON
+  } catch (error) {
+    throw new Error('Invalid JSON content: ' + error.message);
+  }
 }
 
+//==========================================
+// File Upload and Visualization Functions
+//==========================================
+
+// Upload file and process the content
 async function uploadFile() {
-    const fileInput = document.getElementById("file-input");
-    const progressIndicator = document.getElementById("progress-indicator");
-    const visualizationContainer = document.getElementById("visualization-container");
+  const fileInput = document.getElementById("file-input");
+  const progressIndicator = document.getElementById("progress-indicator");
+  const visualizationSection = document.getElementById("visualization-section");
 
-    try {
-        // Check if a file is selected
-        if (!fileInput.files || !fileInput.files.length) {
-            throw new Error("Please select a file first.");
-        }
-
-        const file = fileInput.files[0];
-        validateFile(file);
-
-        // Show progress indicator
-        progressIndicator.classList.remove("hidden");
-
-        // Read and validate file content
-        const fileContent = await file.text();
-        const jsonContent = await validateJSON(fileContent);
-
-        // Send the parsed JSON to the server
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json",
-                "X-Requested-With": "XMLHttpRequest" // CSRF protection
-            },
-            body: JSON.stringify(jsonContent),
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText);
-        }
-
-        // Parse the response and render the tree data
-        const treeData = await response.json();
-        document.getElementById("json-output").textContent = JSON.stringify(treeData, null, 2);
-        
-        // Show visualization container
-        visualizationContainer.classList.remove("hidden");
-        
-        // Show trees tab by default
-        showTab('trees');
-        
-        // Render trees after a short delay
-        setTimeout(() => {
-            renderMultipleTrees(treeData);
-        }, 100);
-
-    } catch (error) {
-        showError(error.message);
-    } finally {
-        progressIndicator.classList.add("hidden");
+  try {
+    if (!fileInput.files?.length) {
+      throw new Error("Please select a file first.");
     }
-}
 
-function showTab(tabName) {
-    // Hide all tab contents
-    document.querySelectorAll(".tab-content").forEach(content => {
-        content.classList.remove("active");
-        content.classList.add("hidden");
+    const file = fileInput.files[0];
+    validateFile(file);
+
+    // Show progress indicator
+    progressIndicator.classList.add('visible');
+
+    const fileContent = await file.text();
+    const jsonContent = await validateJSON(fileContent);
+
+    // Send the JSON content to the backend API
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      body: JSON.stringify(jsonContent),
     });
 
-    // Remove active class from all tab buttons
-    document.querySelectorAll(".tab-button").forEach(button => {
-        button.classList.remove("active");
-    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
 
-    // Show selected tab content and activate its button
-    const selectedTab = document.getElementById(`${tabName}-container`);
-    const selectedButton = document.querySelector(`button[onclick="showTab('${tabName}')"]`);
+    const treeData = await response.json();
+
+    // Update UI with results
+    document.getElementById("json-output").textContent = JSON.stringify(treeData, null, 2);
     
-    selectedTab.classList.remove("hidden");
-    selectedTab.classList.add("active");
-    selectedButton.classList.add("active");
+    // Show visualization section after successful upload
+    visualizationSection.style.display = 'block';
+    showTab('trees');
+    
+    requestAnimationFrame(() => {
+      renderMultipleTrees(treeData);
+    });
+
+  } catch (error) {
+    showError(error.message);
+  } finally {
+    // Hide progress indicator
+    progressIndicator.classList.remove('visible');
+  }
 }
 
+//==========================================
+// Tab Handling
+//==========================================
+
+// Show the selected tab (either trees or JSON output)
+function showTab(tabName) {
+  // Only proceed if visualization section is visible
+  if (document.getElementById("visualization-section").style.display === 'none') {
+    return;
+  }
+
+  // Hide all content and deactivate all buttons
+  document.querySelectorAll(".tab-content").forEach(content => {
+    content.style.display = 'none';
+  });
+  document.querySelectorAll(".tab-button").forEach(button => {
+    button.classList.remove("active");
+  });
+
+  // Show selected content and activate button
+  const selectedTab = document.getElementById(`${tabName}-container`);
+  const selectedButton = document.querySelector(`button[onclick="showTab('${tabName}')"]`);
+
+  if (selectedTab && selectedButton) {
+    selectedTab.style.display = 'block';
+    selectedButton.classList.add("active");
+  }
+}
+
+//==========================================
+// Event Listeners
+//==========================================
+
+// Initialize event listeners for file upload, drag and drop
+function initializeEventListeners() {
+  const dragDropArea = document.getElementById("drag-drop-area");
+  const fileInput = document.getElementById("file-input");
+
+  fileInput?.addEventListener("change", async (event) => {
+    if (event.target.files?.length > 0) {
+      dragDropArea.textContent = `Selected File: ${event.target.files[0].name}`;
+      await uploadFile();
+    }
+  });
+
+  // Drag and drop handlers
+  dragDropArea?.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dragDropArea.classList.add('drag-over');
+  });
+
+  dragDropArea?.addEventListener('dragleave', () => {
+    dragDropArea.classList.remove('drag-over');
+  });
+
+  dragDropArea?.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    dragDropArea.classList.remove('drag-over');
+
+    if (e.dataTransfer?.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      dragDropArea.textContent = `Selected File: ${e.dataTransfer.files[0].name}`;
+      await uploadFile();
+    }
+  });
+
+  dragDropArea?.addEventListener('click', () => {
+    fileInput?.click();
+  });
+}
+
+// Initialize listeners when DOM is ready
+document.addEventListener('DOMContentLoaded', initializeEventListeners);
+
+//==========================================
+// JSON Download Functionality
+//==========================================
+
+// Download the JSON output as a file
 function downloadOutput() {
   const jsonOutput = document.getElementById("json-output").textContent;
 
@@ -150,18 +206,11 @@ function downloadOutput() {
   URL.revokeObjectURL(url);
 }
 
-// Trigger file input click when the drag-drop area is clicked
-document.getElementById("drag-drop-area").addEventListener("click", () => {
-  document.getElementById("file-input").click();
-});
+//==========================================
+// Tree Rendering for Visualization
+//==========================================
 
-// Update drag-drop area text with the selected file name
-document.getElementById("file-input").addEventListener("change", (event) => {
-  if (event.target.files && event.target.files.length > 0) {
-    document.getElementById("drag-drop-area").textContent = `Selected File: ${event.target.files[0].name}`;
-  }
-});
-
+// Transform the data for D3 visualization
 function transformDataForD3(node) {
   if (!node) return null;
 
@@ -179,6 +228,7 @@ function transformDataForD3(node) {
   return transformedNode;
 }
 
+// Render multiple trees for visualization
 function renderMultipleTrees(treesData) {
   const treesContainer = document.getElementById("trees-container");
   if (!treesContainer) {
@@ -188,7 +238,7 @@ function renderMultipleTrees(treesData) {
 
   treesContainer.innerHTML = ""; // Clear any previous trees
 
-  // Add a check for treesData
+  // Check if treesData is valid
   if (!Array.isArray(treesData)) {
     console.error("Invalid trees data format");
     return;
@@ -206,15 +256,15 @@ function renderMultipleTrees(treesData) {
   });
 }
 
+// Create container for each individual tree
 function createTreeContainer(tree, index) {
-  // Create container for each individual tree
   const treeSection = document.createElement("div");
   treeSection.classList.add("tree-section");
 
   const rootLibraryName = tree.name || `Tree ${index + 1}`;
   const treeHeader = document.createElement("h2");
   treeHeader.classList.add("tree-header");
-  treeHeader.textContent = `Dependency Tree: ${rootLibraryName}`;
+  treeHeader.textContent = `Library: ${rootLibraryName}`;
 
   const treeContainer = document.createElement("div");
   treeContainer.classList.add("tree-container");
@@ -226,6 +276,7 @@ function createTreeContainer(tree, index) {
   return treeSection;
 }
 
+// Render a tree using D3.js
 function renderTree(data, containerId) {
   const treeContainer = document.getElementById(containerId);
   if (!treeContainer) {

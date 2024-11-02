@@ -1,17 +1,34 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import json
+import flask.json
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+# CORS(app, resources={r"/*": {"origins": ["https:"]}})
+CORS(app)
 
-# Cleans the SBOM output by filtering out applications and gathering information about components
+
+
+# Set up rate limiting to avoid potential abuse of the /api/parse endpoint
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["100 per hour"]  # Limit to 100 requests per hour per IP address
+)
+
+#==========================================
+# Helper Functions
+#==========================================
+
+# Extracts and cleans SBOM output, removing applications and gathering component information
 def clean_output_application_sbom(output: dict) -> tuple:
     results = []
     ignore_list = []
     deps = output.get("dependencies", [])
     
-    # Add the metadata component's bom-ref to the ignore list
+    # Add metadata component's bom-ref to the ignore list
     metadata_component = output.get("metadata", {}).get("component", {})
     if metadata_component:
         bom_ref = metadata_component.get("bom-ref")
@@ -51,7 +68,7 @@ def clean_output_application_sbom(output: dict) -> tuple:
     
     return results, deps, ignore_list
 
-# Helper function to extract license information
+# Extracts license information from a list of licenses
 def extract_licenses(licenses_list):
     licenses = []
     for lic in licenses_list:
@@ -60,13 +77,13 @@ def extract_licenses(licenses_list):
             licenses.append({"name": license_info.get("name", "Unknown")})
     return licenses
 
-# Converts the bundler type to a more readable format
+# Converts bundler type to a more readable format
 def convert_bundler(component_type: str) -> str:
     if component_type == "bundler":
         return "gem"
     return component_type.lower()
 
-# Converts a JSON string to a Python dictionary, handling potential errors
+# Converts a JSON string to a Python dictionary with error handling
 def convert_output(output_str: str):
     if not output_str:
         raise ValueError("Output string is empty or None.")
@@ -75,7 +92,7 @@ def convert_output(output_str: str):
     except json.JSONDecodeError as e:
         raise ValueError(f"JSON decoding error: {e}")
 
-# Helper function to populate metadata for a given reference
+# Populates metadata for a given reference
 def populate_metadata(data, ref):
     for meta in data:
         bom_ref = meta.get("bom-ref")
@@ -110,11 +127,11 @@ def convert_cyclonedx_to_tree(data: list, deps: list, ignore_list: list) -> tupl
 
 # Recursively builds the hierarchical tree, tracking visited nodes to avoid circular dependencies
 def recursive_hierarchy(graph, metadata, node, visited, depth=0, max_depth=50):
-    # Check for circular dependency
+    # Avoid circular dependencies
     if node in visited:
         return {"ref": node, "error": f"circular dependency detected at {node}. Path: {list(visited)}", "deps": []}
     
-    # Check for exceeding the maximum recursion depth
+    # Check for maximum recursion depth
     if depth > max_depth:
         return {"ref": node, "error": "recursion depth limit reached", "deps": []}
     
@@ -139,7 +156,7 @@ def root_nodes(hierarchical_tree_graph):
     roots = []
     inverse_dependencies = set()
 
-    # Build a set of all nodes that are dependencies
+    # Collect all nodes that are dependencies
     for node in hierarchical_tree_graph[0].values():
         inverse_dependencies.update(node.get("dependsOn", []))
     
@@ -177,11 +194,14 @@ def parser(output):
     if not hierarchical_tree:
         hierarchical_tree = [{"error": "No valid root nodes found or circular dependencies detected."}]
     
-    # Write the resulting tree to a JSON file
     return hierarchical_tree
-from flask import Flask, request, Response
+
+#==========================================
+# Flask API Endpoint
+#==========================================
 
 @app.route('/api/parse', methods=['POST'])
+@limiter.limit("10 per minute")  # Limit to 10 requests per minute per IP address for this specific endpoint
 def parse_endpoint():
     try:
         # Get JSON data from the request
@@ -189,23 +209,17 @@ def parse_endpoint():
         if not request_data:
             return jsonify({"error": "No data provided"}), 400
 
-        # Debugging: Print the received data
-        print("Received request data:", request_data)
-        
         # Parse the SBOM and return the hierarchical tree
         hierarchical_tree = parser(request_data)
-        print("Parsed hierarchical tree:", hierarchical_tree)  # Debugging: Print the parsed result
-
-        # Use json.dumps() to ensure compact JSON output
         return Response(json.dumps(hierarchical_tree), mimetype='application/json')
     except json.JSONDecodeError as e:
-        print(f"JSON Decode Error: {e}")  # Debugging: Print JSON decode errors
         return jsonify({"error": f"Invalid JSON format: {str(e)}"}), 400
     except Exception as e:
-        print(f"General Error: {e}")  # Debugging: Print general errors
         return jsonify({"error": str(e)}), 500
 
-
+#==========================================
+# Main Application Runner
+#==========================================
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

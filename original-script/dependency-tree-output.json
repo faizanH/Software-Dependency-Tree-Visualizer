@@ -1,0 +1,43 @@
+[
+  {
+    "ref": "component-D",
+    "name": "Component D",
+    "version": "1.0.0",
+    "licenses": [],
+    "type": "unknown",
+    "deps": [
+      {
+        "ref": "component-B",
+        "name": "Component B",
+        "version": "1.0.0",
+        "licenses": [],
+        "type": "unknown",
+        "deps": [
+          {
+            "ref": "component-C",
+            "name": "Component C",
+            "version": "1.0.0",
+            "licenses": [],
+            "type": "unknown",
+            "deps": [
+              {
+                "ref": "component-A",
+                "name": "Component A",
+                "version": "1.0.0",
+                "licenses": [],
+                "type": "unknown",
+                "deps": [
+                  {
+                    "ref": "component-B",
+                    "error": "circular dependency detected at component-B. Path: ['component-A', 'component-C', 'component-D', 'component-B']",
+                    "deps": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

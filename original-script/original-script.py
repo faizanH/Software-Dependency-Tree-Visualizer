@@ -182,7 +182,7 @@ def parser(output):
         hierarchical_tree = [{"error": "No valid root nodes found or circular dependencies detected."}]
     
     # Write the resulting tree to a JSON file
-    write_tree_to_json(hierarchical_tree, "hierarchical_tree.json")
+    write_tree_to_json(hierarchical_tree, "dependency_tree_output.json")
 
 # Attempt to read the input file and parse it
 try:

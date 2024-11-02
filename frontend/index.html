@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dependency Tree Visualizer</title>
+    <meta name="description" content="Visualize dependency trees from JSON files">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🌳</text></svg>">
+</head>
+<body>
+  <div class="container">
+    <!-- GitHub Corner Icon -->
+    <div class="github-corner">
+      <a href="https://github.com/faizan12123/CycloneDX-SBOM-to-Dependency-Tree-Generator" target="_blank" rel="noopener noreferrer">
+        <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#bb86fc; color:#121212; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+          <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+          <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+          <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Main Title -->
+    <h1>Dependency Tree Visualizer</h1>
+  
+    <!-- Information Section -->
+    <div class="info-section">
+      <div class="info-card">
+        <h2>About</h2>
+        <p>The Dependency Tree Visualizer helps you understand and analyze your software dependencies by creating interactive visualizations from Software Bill of Materials (SBOM) data.</p>
+      </div>
+  
+      <div class="info-card">
+        <h2>How to Use</h2>
+        <ol>
+          <li>Generate an SBOM using a tool, such as <a href="https://github.com/aquasecurity/trivy" target="_blank" rel="noopener noreferrer">Trivy</a> in CycloneDX JSON format</li>
+          <li>Upload the generated JSON file using the interface below</li>
+          <li>Explore your dependency tree visualization</li>
+        </ol>
+      </div>
+  
+      <div class="info-card">
+        <h2>Features</h2>
+        <ul>
+          <li>Visualize your SBOM as trees</li>
+          <li>Handles Circular Dependencies</li>
+          <li>Raw JSON output view</li>
+          <li>Easy data download for further analysis</li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="divider"></div>
+  
+    <!-- Initial File Upload Section -->
+    <div id="initial-upload-section">
+      <div id="file-upload-area" class="file-upload-area">
+        <div id="drag-drop-area" class="drag-drop-area">
+          Drag and drop a JSON file here, or click to select a file
+        </div>
+        <input type="file" id="file-input" accept=".json">
+        <button onclick="uploadFile()">Upload and Visualize</button>
+        <!-- Progress Indicator (hidden by default) -->
+        <div id="progress-indicator" class="progress-indicator">
+          <div class="spinner"></div>
+          <span>Processing your file...</span>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Visualization Section (Initially Hidden) -->
+    <div id="visualization-section" style="display: none;">
+      <div class="tabs">
+        <button class="tab-button active" onclick="showTab('trees')">Dependency Trees</button>
+        <button class="tab-button" onclick="showTab('json')">Raw JSON Output</button>
+      </div>
+  
+      <!-- Trees Container -->
+      <div id="trees-container" class="tab-content"></div>
+  
+      <!-- JSON Container -->
+      <div id="json-container" class="tab-content" style="display: none;">
+        <div class="json-header">
+          <h2>Raw JSON Output</h2>
+          <button onclick="downloadOutput()">Download JSON</button>
+        </div>
+        <pre id="json-output"></pre>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p>Tool Created by Faizan Hussain</p>
+        <div class="social-links">
+          <!-- GitHub Link -->
+          <a href="https://github.com/faizan12123" target="_blank" rel="noopener noreferrer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+          </a>
+          <!-- LinkedIn Link -->
+          <a href="https://www.linkedin.com/in/faizan-hussain12123/" target="_blank" rel="noopener noreferrer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+              <rect x="2" y="9" width="4" height="12"></rect>
+              <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- External JavaScript Libraries -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

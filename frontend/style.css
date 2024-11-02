@@ -1,0 +1,443 @@
+/*==========================================*/
+/* Root variables for colors and other design constants */
+/*==========================================*/
+:root {
+  --primary-color: #bb86fc;
+  --background-dark: #121212;
+  --background-light: #1e1e1e;
+  --background-lighter: #2c2c2c;
+  --text-primary: #e0e0e0;
+  --error-color: #ff6b6b;
+  --success-color: #4caf50;
+}
+
+/*==========================================*/
+/* General reset and box-sizing */
+/*==========================================*/
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/*==========================================*/
+/* Body styles */
+/*==========================================*/
+body {
+  background-color: var(--background-dark);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/*==========================================*/
+/* Container styles */
+/*==========================================*/
+.container {
+  width: 95%;
+  max-width: 1400px;
+  background-color: var(--background-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  position: relative;
+  padding-top: 1rem; /* Adjusted for GitHub corner */
+}
+
+/*==========================================*/
+/* Heading styles */
+/*==========================================*/
+h1, h2, h3 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+/*==========================================*/
+/* File upload area */
+/*==========================================*/
+.file-upload-area {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+/*==========================================*/
+/* Drag and drop area for file upload */
+/*==========================================*/
+.drag-drop-area {
+  padding: 2rem;
+  border: 2px dashed var(--primary-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--background-lighter);
+  margin-bottom: 1rem;
+}
+
+/* Hover effect for drag-drop area */
+.drag-drop-area:hover,
+.drag-drop-area.drag-over {
+  background-color: rgba(187, 134, 252, 0.1);
+  transform: translateY(-2px);
+}
+
+/*==========================================*/
+/* Hide default file input */
+/*==========================================*/
+#file-input {
+  display: none;
+}
+
+/*==========================================*/
+/* Button styles */
+/*==========================================*/
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--background-dark);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin: 0.5rem;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(187, 134, 252, 0.2);
+}
+
+/*==========================================*/
+/* Tabs section */
+/*==========================================*/
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+/*==========================================*/
+/* Tab button styles */
+/*==========================================*/
+.tab-button {
+  background-color: var(--background-lighter);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+/* Active tab button */
+.tab-button.active {
+  background-color: var(--primary-color);
+  color: var(--background-dark);
+}
+
+/*==========================================*/
+/* Content section for tabs */
+/*==========================================*/
+.tab-content {
+  background-color: var(--background-lighter);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+/*==========================================*/
+/* JSON output header */
+/*==========================================*/
+.json-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+
+/*==========================================*/
+/* JSON output display */
+/*==========================================*/
+#json-output {
+  background-color: var(--background-light);
+  padding: 1.5rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/*==========================================*/
+/* Error message styles */
+/*==========================================*/
+.error-message {
+  color: var(--error-color);
+  background-color: rgba(255, 107, 107, 0.1);
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/*==========================================*/
+/* Tree section styles */
+/*==========================================*/
+.tree-section {
+  background-color: var(--background-lighter);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/*==========================================*/
+/* Tree container for D3 visualizations */
+/*==========================================*/
+.tree-container {
+  width: 100%;
+  height: 500px;
+  overflow: auto;
+  padding: 1rem;
+  background-color: var(--background-light);
+  border-radius: 6px;
+}
+
+/*==========================================*/
+/* D3.js specific styles */
+/*==========================================*/
+.node circle {
+  fill: var(--primary-color);
+}
+
+.node text {
+  font-size: 0.9rem;
+}
+
+.link {
+  stroke: var(--primary-color);
+  stroke-opacity: 0.5;
+}
+
+/*==========================================*/
+/* Info section cards */
+/*==========================================*/
+.info-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.info-card {
+  background-color: var(--background-lighter);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for info cards */
+.info-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Info card headings and paragraphs */
+.info-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.info-card p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* List styles within info cards */
+.info-card ul, .info-card ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.info-card li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+/*==========================================*/
+/* Links in info cards */
+/*==========================================*/
+.info-card a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.info-card a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+/*==========================================*/
+/* Command section */
+/*==========================================*/
+.command {
+  background-color: var(--background-dark);
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/*==========================================*/
+/* Divider line */
+/*==========================================*/
+.divider {
+  height: 1px;
+  background-color: var(--primary-color);
+  opacity: 0.2;
+  margin: 2rem 0;
+}
+
+/*==========================================*/
+/* Progress indicator for file upload */
+/*==========================================*/
+.progress-indicator {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.progress-indicator.visible {
+  display: flex;
+}
+
+/* Spinner animation for progress indicator */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--background-lighter);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/*==========================================*/
+/* Responsive adjustments */
+/*==========================================*/
+@media (max-width: 768px) {
+  .info-section {
+      grid-template-columns: 1fr;
+  }
+
+  .command {
+      font-size: 0.8rem;
+      padding: 0.5rem;
+  }
+}
+
+/*==========================================*/
+/* Footer section */
+/*==========================================*/
+.footer {
+  margin-top: 4rem;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(187, 134, 252, 0.1);
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Social media links in footer */
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.social-icon {
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: var(--primary-color);
+}
+
+/*==========================================*/
+/* GitHub Corner styles */
+/*==========================================*/
+.github-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.github-corner svg {
+  transition: transform 0.3s ease;
+}
+
+.github-corner:hover svg {
+  transform: scale(1.1);
+}
+
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+@keyframes octocat-wave {
+  0%, 100% { transform: rotate(0); }
+  20%, 60% { transform: rotate(-25deg); }
+  40%, 80% { transform: rotate(10deg); }
+}
+
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+  
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
+  
+  .github-corner svg {
+    width: 60px;
+    height: 60px;
+  }
+}

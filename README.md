@@ -1,10 +1,10 @@
-#[ Dependency Tree Visualizer]()
+# Software Dependency Tree Visualizer
 
 **Hosted Application URL**: [https://dependency-tree-techzon.pythonanywhere.com](https://dependency-tree-techzon.pythonanywhere.com)
 
 **Hosted API URL**: [https://dependency-tree-techzon.pythonanywhere.com/api/parse](https://dependency-tree-techzon.pythonanywhere.com/api/parse)
 
-The **Dependency Tree Visualizer** is a web-based tool that helps users understand and analyze software dependencies by creating interactive visualizations from Software Bill of Materials (SBOM) data. This application supports visualizing dependency trees, which can be particularly useful in analyzing software dependencies and identifying potential issues such as circular dependencies.
+The **Software Dependency Tree Visualizer** is a web-based tool that helps users understand and analyze software dependencies by creating interactive visualizations from Software Bill of Materials (SBOM) data. This application supports visualizing dependency trees, which can be particularly useful in analyzing software dependencies and identifying potential issues such as circular dependencies.
 
 ## Table of Contents
 
@@ -99,4 +99,3 @@ We welcome contributions to improve the **Dependency Tree Visualizer**. To contr
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-

@@ -8,6 +8,7 @@ The **Software Dependency Tree Visualizer** is a web-based tool that helps users
 
 ## Table of Contents
 
+- [Photo Gallery](#photo-gallery)
 - [Features](#features)
 - [How to Use the UI](#how-to-use-the-ui)
 - [How to Use the API](#how-to-use-the-api)
@@ -16,6 +17,22 @@ The **Software Dependency Tree Visualizer** is a web-based tool that helps users
   - [Setup](#setup)
 - [Contributing](#contributing)
 - [License](#license)
+
+## Photo Gallery
+
+Here are some screenshots of the Software Dependency Tree Visualizer in action:
+
+<table>
+  <tr>
+    <td><img src="screenshots/screenshot1.png" alt="Screenshot 1" width="300"></td>
+    <td><img src="screenshots/screenshot2.png" alt="Screenshot 2" width="300"></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/screenshot3.png" alt="Screenshot 3" width="300"></td>
+    <td><img src="screenshots/screenshot4.png" alt="Screenshot 4" width="300"></td>
+  </tr>
+</table>
+
 
 ## Features
 

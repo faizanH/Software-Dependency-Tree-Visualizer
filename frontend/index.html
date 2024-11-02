@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dependency Tree Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Dependency Tree Visualizer</h1>
+        
+        <div id="file-upload-area" class="file-upload-area">
+            <div id="drag-drop-area" class="drag-drop-area">
+                Drag and drop a file here, or click to select a file.
+            </div>
+            <input type="file" id="file-input" accept=".json" />
+            <button onclick="uploadFile()">Upload and Visualize</button>
+            <div id="progress-indicator" class="progress-indicator hidden">
+                Processing...
+            </div>
+        </div>
+
+        <div id="visualization-container" class="hidden">
+            <div class="tabs">
+                <button class="tab-button" onclick="showTab('trees')">Dependency Trees</button>
+                <button class="tab-button" onclick="showTab('json')">Raw JSON Output</button>
+            </div>
+
+            <div id="trees-container" class="tab-content hidden">
+                <!-- Tree visualizations will be inserted here -->
+            </div>
+
+            <div id="json-container" class="tab-content hidden">
+                <div class="json-header">
+                    <h2>Raw JSON Output</h2>
+                    <button onclick="downloadOutput()" class="download-button">Download Output</button>
+                </div>
+                <pre id="json-output"></pre>
+            </div>
+        </div>
+    </div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

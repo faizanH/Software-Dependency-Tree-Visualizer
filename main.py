@@ -1,3 +1,5 @@
+# Raw Script if you want to run the tool locally
+
 import json
 
 # Cleans the SBOM output by filtering out applications and gathering information about components

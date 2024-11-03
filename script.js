@@ -217,7 +217,7 @@ function transformDataForD3(node) {
   // Convert "deps" key to "children" and rename "ref" to "name" if necessary
   let transformedNode = {
     ...node,
-    name: node.name || node.ref,
+    name: node.error || node.name || node.ref,
     children: node.deps ? node.deps.map(transformDataForD3) : [],
   };
 
@@ -328,42 +328,33 @@ function renderTree(data, containerId) {
     .attr("class", "node")
     .attr("transform", (d) => `translate(${d.x},${d.y})`);
 
+  // Append the text and rectangle together
   nodes.each(function (d) {
-    const labelText = d.data.name;
+    const nodeGroup = d3.select(this);
 
-    // Create a temporary text element to calculate its width
-    const tempText = d3.select(this)
-      .append("text")
+    // Append text to the node
+    const text = nodeGroup.append("text")
+      .attr("dy", 4)  // Adjust the vertical alignment
+      .attr("x", 0)
+      .style("text-anchor", "middle")
+      .style("fill", "#ffffff")
+      .style("font-weight", "bold")
       .style("font", "12px Arial")
-      .text(labelText)
-      .style("visibility", "hidden");
+      .text(d => d.data.name);
 
-    const textWidth = tempText.node().getComputedTextLength();
+    // Use bounding box to set the size of the rectangle
+    const bbox = text.node().getBBox();
 
-    // Remove the temporary text element after measurement
-    tempText.remove();
-
-    // Append rectangle with appropriate dimensions
-    d3.select(this)
-      .append("rect")
-      .attr("width", textWidth + 20)
-      .attr("height", 30)
-      .attr("x", -(textWidth / 2) - 10)
-      .attr("y", -15)
+    // Append rectangle with calculated dimensions
+    nodeGroup.insert("rect", "text")
+      .attr("x", -bbox.width / 2 - 10)  // Center the rectangle with padding
+      .attr("y", -bbox.height / 2 - 5)  // Center vertically with padding
+      .attr("width", bbox.width + 20)  // Add padding
+      .attr("height", bbox.height + 10)  // Add padding
       .style("fill", "#bb86fc")
       .style("stroke", "#e0e0e0")
       .style("stroke-width", 1.5)
       .style("rx", 5)
       .style("ry", 5);
-
-    // Append the text inside the rectangle
-    d3.select(this)
-      .append("text")
-      .attr("dy", 8)
-      .attr("x", 0)
-      .style("text-anchor", "middle")
-      .style("fill", "#ffffff")
-      .style("font-weight", "bold")
-      .text(labelText);
   });
 }

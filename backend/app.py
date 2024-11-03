@@ -177,7 +177,7 @@ def parser(output):
     roots = root_nodes(hierarchical_tree_graph)
     
     if not roots:
-        raise ValueError("No valid root nodes found or circular dependencies detected.")
+        raise ValueError("No valid root dependencies found or circular dependencies detected.")
     
     # Build the hierarchical tree starting from each root node
     hierarchical_tree = [recursive_hierarchy(hierarchical_tree_graph[0], hierarchical_tree_graph[1], root, set()) for root in roots]

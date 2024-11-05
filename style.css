@@ -125,6 +125,20 @@ button {
   margin: 0.5rem;
 }
 
+.button-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.or-text {
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
 button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(187, 134, 252, 0.2);
@@ -258,6 +272,13 @@ button:hover {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+.disclaimer {
+  color: var(--text-primary);
+  font-style: italic;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .info-card {
@@ -452,5 +473,11 @@ button:hover {
   .github-corner svg {
     width: 60px;
     height: 60px;
+  }
+
+  .button-group {
+    flex-direction: row;
+    gap: 0.3rem;
+    flex-wrap: nowrap;
   }
 }

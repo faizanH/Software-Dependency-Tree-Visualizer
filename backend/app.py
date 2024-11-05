@@ -55,7 +55,7 @@ def clean_output_application_sbom(output: dict) -> tuple:
         if len(properties) > 1:
             value = properties[1].get("value")
             if value:
-                component_type = convert_bundler(value)
+                component_type = value
         
         # Append the cleaned component data to the results list
         results.append({
@@ -76,12 +76,6 @@ def extract_licenses(licenses_list):
         if license_info:
             licenses.append({"name": license_info.get("name", "Unknown")})
     return licenses
-
-# Converts bundler type to a more readable format
-def convert_bundler(component_type: str) -> str:
-    if component_type == "bundler":
-        return "gem"
-    return component_type.lower()
 
 # Converts a JSON string to a Python dictionary with error handling
 def convert_output(output_str: str):

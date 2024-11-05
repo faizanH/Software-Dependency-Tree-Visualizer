@@ -107,6 +107,54 @@ async function uploadFile() {
 }
 
 //==========================================
+// Example SBOM Test
+// =========================================
+async function loadExampleSBOM() {
+  const progressIndicator = document.getElementById("progress-indicator");
+  const visualizationSection = document.getElementById("visualization-section");
+  const dragDropArea = document.getElementById("drag-drop-area");
+
+  try {
+    // Show progress indicator
+    progressIndicator.classList.add('visible');
+
+    // Fetch the example JSON file
+    const response = await fetch('original-script/cycloneDX_SBOM.json');
+    if (!response.ok) throw new Error("Failed to load example SBOM");
+
+    const jsonContent = await response.json();
+
+    // Update the file selection text
+    dragDropArea.textContent = "Selected File: Example SBOM file";
+
+    // Send the JSON content to the backend API
+    const apiResponse = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jsonContent),
+    });
+
+    if (!apiResponse.ok) throw new Error(await apiResponse.text());
+
+    const treeData = await apiResponse.json();
+
+    // Display JSON output and render visualization
+    document.getElementById("json-output").textContent = JSON.stringify(treeData, null, 2);
+    visualizationSection.style.display = 'block';
+    showTab('trees');
+    renderMultipleTrees(treeData);
+
+  } catch (error) {
+    showError(error.message);
+  } finally {
+    // Hide progress indicator
+    progressIndicator.classList.remove('visible');
+  }
+}
+
+
+
+//==========================================
 // Tab Handling
 //==========================================
 

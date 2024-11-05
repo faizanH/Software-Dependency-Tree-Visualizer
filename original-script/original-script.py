@@ -29,13 +29,13 @@ def clean_output_application_sbom(output: dict) -> tuple:
         version = item.get("version", "Unknown")
         licenses = extract_licenses(item.get("licenses", []))
         
-        # Determine the component type, converting if necessary
+        # Determine the component type
         properties = item.get("properties", [])
         component_type = "unknown"
         if len(properties) > 1:
             value = properties[1].get("value")
             if value:
-                component_type = convert_bundler(value)
+                component_type = value
         
         # Append the cleaned component data to the results list
         results.append({
@@ -56,12 +56,6 @@ def extract_licenses(licenses_list):
         if license_info:
             licenses.append({"name": license_info.get("name", "Unknown")})
     return licenses
-
-# Converts the bundler type to a more readable format
-def convert_bundler(component_type: str) -> str:
-    if component_type == "bundler":
-        return "gem"
-    return component_type.lower()
 
 # Converts a JSON string to a Python dictionary, handling potential errors
 def convert_output(output_str: str):
@@ -102,7 +96,6 @@ def convert_cyclonedx_to_tree(data: list, deps: list, ignore_list: list) -> tupl
         # Add dependencies for the current component
         depends_on = component.get("dependsOn", [])
         graph[ref]["dependsOn"].extend(depends_on)
-
     return graph, metadata
 
 # Recursively builds the hierarchical tree, tracking visited nodes to avoid circular dependencies

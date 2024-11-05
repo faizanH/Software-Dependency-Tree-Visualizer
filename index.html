@@ -31,13 +31,18 @@
       <div class="info-card">
         <h2>About</h2>
         <p>The Software Dependency Tree Visualizer helps you understand and analyze your software dependencies by creating interactive visualizations from Software Bill of Materials (SBOM) data.</p>
+        <p class="disclaimer">
+          <strong>Please Note:</strong> I do not retain any of the SBOM data you provide. All data is processed temporarily for visualization purposes only and is not stored or shared in any form.
+        </p>        
       </div>
   
       <div class="info-card">
         <h2>How to Use</h2>
+        <ol>Try a testing a sample SBOM file using the "Try Example SBOM File" button below or follow these steps to use your own SBOM file:</ol>
         <ol>
           <li>Generate an SBOM using a tool, such as <a href="https://github.com/aquasecurity/trivy" target="_blank" rel="noopener noreferrer">Trivy</a> in CycloneDX JSON format</li>
           <li>Upload the generated JSON file using the interface below</li>
+          <li>Explore your dependency tree visualization</li>
           <li>Explore your dependency tree visualization</li>
         </ol>
       </div>
@@ -66,8 +71,14 @@
       Example file can be located <a href="https://github.com/faizan12123/Software-Dependency-Tree-Visualizer/blob/main/original-script/cycloneDX_SBOM.json" target="_blank" rel="noopener noreferrer">here</a>
     </div>
 
-    <input type="file" id="file-input" accept=".json">
-    <button onclick="uploadFile()">Upload and Visualize</button>
+    <div class="button-group">
+      <input type="file" id="file-input" accept=".json">
+      <button class="tab-button" onclick="uploadFile()">Upload and Visualize</button>
+      <span class="or-text">or</span>
+      <button class="tab-button" onclick="loadExampleSBOM()">Try Example SBOM File</button>
+    </div>
+    
+    
 
     <!-- Progress Indicator (hidden by default) -->
     <div id="progress-indicator" class="progress-indicator">

@@ -48,7 +48,7 @@ Here are some screenshots of the Software Dependency Tree Visualizer in action:
 - **JSON Data Sanitization and Error Handling**: Ensures that uploaded JSON files are sanitized, and provides detailed error messages for invalid files or unexpected formats.
 
 ## How to Use the UI
-
+Try a testing a sample SBOM file using the "Try Example SBOM File" button or follow these steps to use your own SBOM file:
 1. **Generate an SBOM**: Use tools like [Trivy](https://github.com/aquasecurity/trivy) to generate an SBOM in JSON format.
 2. **Upload the JSON File**: Drag and drop your SBOM JSON file or click to select a file.
 3. **Visualize Dependencies**: The dependency tree will be displayed, providing an interactive way to explore the relationships between components.

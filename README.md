@@ -1,4 +1,4 @@
-# [Software Dependency Tree Visualizer](https://faizan12123.github.io/Software-Dependency-Tree-Visualizer/)
+# [Software Dependency Tree Visualizer](https://faizanh.github.io/Software-Dependency-Tree-Visualizer/)
 
 **Hosted Application URL**: [https://faizanH.github.io/Software-Dependency-Tree-Visualizer/](https://faizanH.github.io/Software-Dependency-Tree-Visualizer/)
 
